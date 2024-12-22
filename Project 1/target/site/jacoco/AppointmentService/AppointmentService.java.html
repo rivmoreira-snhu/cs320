@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppointmentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">project1</a> &gt; <a href="index.source.html" class="el_package">AppointmentService</a> &gt; <span class="el_source">AppointmentService.java</span></div><h1>AppointmentService.java</h1><pre class="source lang-java linenums">package AppointmentService;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
+public class AppointmentService {
+    private final Map&lt;String, Appointment&gt; appointments;
+<span class="fc" id="L8">    private static final Logger logger = Logger.getLogger(AppointmentService.class.getName());</span>
+
+<span class="fc" id="L10">    public AppointmentService() {</span>
+<span class="fc" id="L11">        this.appointments = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L12">        logger.info(&quot;AppointmentService initialized.&quot;);</span>
+<span class="fc" id="L13">    }</span>
+
+    // Adding a new appointment
+    public void addAppointment(Appointment appointment) {
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (appointments.containsKey(appointment.getAppointmentId())) {</span>
+<span class="fc" id="L18">            logger.warning(&quot;Attempt to add duplicate appointment ID: &quot; + appointment.getAppointmentId());</span>
+<span class="fc" id="L19">            throw new IllegalArgumentException(&quot;Appointment ID already exists. ID must be unique.&quot;);</span>
+        }
+<span class="fc" id="L21">        appointments.put(appointment.getAppointmentId(), appointment);</span>
+<span class="fc" id="L22">        logger.info(&quot;Appointment added with ID: &quot; + appointment.getAppointmentId());</span>
+<span class="fc" id="L23">    }</span>
+
+    // Deleting an appointment by ID
+    public void deleteAppointment(String appointmentId) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (!appointments.containsKey(appointmentId)) {</span>
+<span class="fc" id="L28">            logger.warning(&quot;Attempt to delete non-existent appointment ID: &quot; + appointmentId);</span>
+<span class="fc" id="L29">            throw new IllegalArgumentException(&quot;Appointment ID does not exist.&quot;);</span>
+        }
+<span class="fc" id="L31">        appointments.remove(appointmentId);</span>
+<span class="fc" id="L32">        logger.info(&quot;Appointment deleted with ID: &quot; + appointmentId);</span>
+<span class="fc" id="L33">    }</span>
+
+    // Updating an existing appointment
+    public void updateAppointment(String appointmentId, java.util.Date newDate, String newDescription) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (!appointments.containsKey(appointmentId)) {</span>
+<span class="fc" id="L38">            logger.warning(&quot;Attempt to update non-existent appointment ID: &quot; + appointmentId);</span>
+<span class="fc" id="L39">            throw new IllegalArgumentException(&quot;Appointment ID does not exist.&quot;);</span>
+        }
+    
+        // Validate new date
+<span class="fc bfc" id="L43" title="All 4 branches covered.">        if (newDate == null || newDate.before(new java.util.Date())) {</span>
+<span class="fc" id="L44">            logger.warning(&quot;Invalid appointment date provided for update: &quot; + newDate);</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(&quot;Appointment date cannot be null or in the past.&quot;);</span>
+        }
+    
+        // Validate new description
+<span class="fc bfc" id="L49" title="All 4 branches covered.">        if (newDescription == null || newDescription.length() &gt; 50) {</span>
+<span class="fc" id="L50">            logger.warning(&quot;Invalid appointment description provided for update: &quot; + newDescription);</span>
+<span class="fc" id="L51">            throw new IllegalArgumentException(&quot;Description cannot be null or exceed 50 characters.&quot;);</span>
+        }
+    
+        // Create updated appointment
+<span class="fc" id="L55">        Appointment updatedAppointment = new Appointment(appointmentId, newDate, newDescription);</span>
+<span class="fc" id="L56">        appointments.put(appointmentId, updatedAppointment);</span>
+<span class="fc" id="L57">        logger.info(&quot;Appointment updated with ID: &quot; + appointmentId);</span>
+<span class="fc" id="L58">    }</span>
+    
+    // Getter for appointment map (for testing purposes)
+    public Map&lt;String, Appointment&gt; getAppointments() {
+<span class="fc" id="L62">        return new HashMap&lt;&gt;(appointments); // Return a copy to prevent modification</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
